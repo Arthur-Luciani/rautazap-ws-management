@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: ws-management
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: mongoadmin
+      password: secret
+    redis:
+      host: localhost
+      port: 6379
+broker:
+  host: localhost
+  port: 61616
+  username: artemis
+  password: artemis

@@ -30,6 +30,6 @@ public class WebSocketNotifyUserPort implements NotifyUserPort {
         }
     }
 
-    private record WebSocketResponseMessage(String message) {
+    private record WebSocketResponseMessage(String content) {
     }
 }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class WebSocketChannelInterceptor implements ChannelInterceptor {
 
-    static final String WS_ID_HEADER = "ws-userId";
+    static final String WS_ID_HEADER = "ws-id";
 
     @Override
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {

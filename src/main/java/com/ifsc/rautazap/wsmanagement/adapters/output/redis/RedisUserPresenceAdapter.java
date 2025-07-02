@@ -1,5 +1,6 @@
 package com.ifsc.rautazap.wsmanagement.adapters.output.redis;
 
+import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
 import com.ifsc.rautazap.wsmanagement.ports.output.UserPresencePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -18,17 +19,17 @@ public class RedisUserPresenceAdapter implements UserPresencePort {
     }
 
     @Override
-    public void addUserOnline(String userId) {
-        stringRedisTemplate.opsForSet().add(USER_PRESENCE_KEY, userId);
+    public void addUserOnline(UserId userId) {
+        stringRedisTemplate.opsForSet().add(USER_PRESENCE_KEY, userId.value());
     }
 
     @Override
-    public void removeUserOnline(String userId) {
-        stringRedisTemplate.opsForSet().remove(USER_PRESENCE_KEY, userId);
+    public void removeUserOnline(UserId userId) {
+        stringRedisTemplate.opsForSet().remove(USER_PRESENCE_KEY, userId.value());
     }
 
     @Override
-    public boolean isUserOnline(String userId) {
-        return Boolean.TRUE.equals(stringRedisTemplate.opsForSet().isMember(USER_PRESENCE_KEY, userId));
+    public boolean isUserOnline(UserId userId) {
+        return Boolean.TRUE.equals(stringRedisTemplate.opsForSet().isMember(USER_PRESENCE_KEY, userId.value()));
     }
 }

@@ -1,8 +1,7 @@
 package com.ifsc.rautazap.wsmanagement.adapters.input.websocket;
 
+import com.ifsc.rautazap.wsmanagement.domain.message.SendMessageCommand;
 import com.ifsc.rautazap.wsmanagement.ports.input.SendMessageUseCase;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -25,7 +24,7 @@ public class WebSocketController {
 
     @MessageMapping("message/{toUser}")
     public boolean sendMessage(Principal principal, @DestinationVariable String toUser, @RequestBody WebSocketRequestMessage message) {
-        sendMessageUseCase.sendMessage(principal.getName(), toUser, message.messageContent);
+        sendMessageUseCase.sendMessage(new SendMessageCommand(principal.getName(), toUser, message.messageContent));
         return true;
     }
 

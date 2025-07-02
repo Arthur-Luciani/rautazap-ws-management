@@ -1,13 +1,13 @@
 package com.ifsc.rautazap.wsmanagement.adapters.output.kafka;
 
-import com.ifsc.rautazap.wsmanagement.domain.message.MessageDTO;
-import com.ifsc.rautazap.wsmanagement.ports.output.SendMessageTopicPort;
+import com.ifsc.rautazap.wsmanagement.domain.message.Message;
+import com.ifsc.rautazap.wsmanagement.ports.output.SaveMessageTopicPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaSaveMessageTopicAdapter implements SendMessageTopicPort {
+public class KafkaSaveMessageTopicAdapter implements SaveMessageTopicPort {
 
     private static final String SAVE_MESSAGE_TOPIC = "save-message";
 
@@ -19,7 +19,7 @@ public class KafkaSaveMessageTopicAdapter implements SendMessageTopicPort {
     }
 
     @Override
-    public void publishSaveMessage(MessageDTO message) {
+    public void publishSaveMessage(Message.MessageData message) {
         kafkaTemplate.send(SAVE_MESSAGE_TOPIC, message.toUserId(), message);
     }
 }

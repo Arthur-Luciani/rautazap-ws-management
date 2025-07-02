@@ -2,9 +2,11 @@ package com.ifsc.rautazap.wsmanagement.adapters.output.websocket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 import com.ifsc.rautazap.wsmanagement.ports.output.NotifyUserPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
@@ -20,16 +22,17 @@ public class WebSocketNotifyUserPort implements NotifyUserPort {
     }
 
     @Override
-    public void notifyUser(String fromUserId, String toUserId, String message) {
+    public void notifyUser(Message.MessageData message) {
         try {
-            String json = new ObjectMapper().writeValueAsString(new WebSocketResponseMessage(fromUserId, message));
-            messagingTemplate.convertAndSendToUser(toUserId, "/topic/messages", json);
+            String json = new ObjectMapper().writeValueAsString(new WebSocketResponseMessage(message.id(), message.fromUserId(), message.content()));
+            messagingTemplate.convertAndSendToUser(message.toUserId(), "/topic/messages", json);
         } catch (JsonProcessingException e) {
             log.error("Error serializing message to JSON", e);
-            //Should add message to a dead letter queue or log it for further investigation
+        } catch (MessagingException e) {
+            log.error("Error sending message via WebSocket", e);
         }
     }
 
-    private record WebSocketResponseMessage(String fromUserId, String content) {
+    private record WebSocketResponseMessage(String messageId, String fromUserId, String content) {
     }
 }

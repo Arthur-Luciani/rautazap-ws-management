@@ -1,10 +1,12 @@
 package com.ifsc.rautazap.wsmanagement.ports.output;
 
+import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
+
 public interface UserPresencePort {
 
-    void addUserOnline(String userId);
+    void addUserOnline(UserId userId);
 
-    void removeUserOnline(String userId);
+    void removeUserOnline(UserId userId);
 
-    boolean isUserOnline(String userId);
+    boolean isUserOnline(UserId userId);
 }

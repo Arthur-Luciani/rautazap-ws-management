@@ -1,5 +1,8 @@
 package com.ifsc.rautazap.wsmanagement.infra.document;
 
+import com.ifsc.rautazap.wsmanagement.domain.message.Message;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +13,9 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "messages")
 public class MessageDocument {
 
@@ -22,12 +27,16 @@ public class MessageDocument {
     private LocalDateTime timestamp;
     private boolean delivered;
 
-    public MessageDocument(String fromUserId, String toUserId, String content, boolean isToUserOnline) {
-        this.fromUserId = fromUserId;
-        this.toUserId = toUserId;
-        this.content = content;
-        this.timestamp = LocalDateTime.now();
-        this.delivered = isToUserOnline;
+    public static MessageDocument fromMessage(Message.MessageData message) {
+        return MessageDocument.builder()
+                .id(message.id())
+                .fromUserId(message.fromUserId())
+                .toUserId(message.toUserId())
+                .content(message.content())
+                .timestamp(message.timestamp())
+                .delivered(message.isDestinationUserOnline())
+                .build();
     }
+
 
 }

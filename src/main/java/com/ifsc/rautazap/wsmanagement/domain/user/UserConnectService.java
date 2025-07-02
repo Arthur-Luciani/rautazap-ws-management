@@ -19,15 +19,13 @@ public class UserConnectService implements UserPresenceUseCase {
     }
 
     @Override
-    public void onUserConnected(String userId) {
+    public void onUserConnected(UserId userId) {
         userPresencePort.addUserOnline(userId);
-        User user = new User(userId);
-        UserDTO dto = user.toDTO();
-        userOnlineTopicPort.publishUserOnlie(dto);
+        userOnlineTopicPort.publishUserOnline(userId);
     }
 
     @Override
-    public void onUserDisconnected(String userId) {
+    public void onUserDisconnected(UserId userId) {
         userPresencePort.removeUserOnline(userId);
     }
 }

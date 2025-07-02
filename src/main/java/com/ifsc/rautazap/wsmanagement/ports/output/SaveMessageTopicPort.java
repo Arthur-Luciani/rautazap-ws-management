@@ -2,8 +2,7 @@ package com.ifsc.rautazap.wsmanagement.ports.output;
 
 import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 
-public interface NotifyUserPort {
+public interface SaveMessageTopicPort {
 
-    void notifyUser(Message.MessageData message);
-
+    void publishSaveMessage(Message.MessageData message);
 }

@@ -17,8 +17,8 @@ public class User {
         this.online = online;
     }
 
-    public UserDTO toDTO() {
-        return new UserDTO(id);
+    public UserId toDTO() {
+        return new UserId(id);
     }
 
 }

@@ -3,7 +3,6 @@ package com.ifsc.rautazap.wsmanagement.adapters.output.mongo;
 import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import com.ifsc.rautazap.wsmanagement.infra.document.MessageDocument;
-import com.ifsc.rautazap.wsmanagement.infra.document.MessageDocumentMapper;
 import com.ifsc.rautazap.wsmanagement.infra.document.MessageMongoRepository;
 import com.ifsc.rautazap.wsmanagement.ports.output.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +14,15 @@ import java.util.List;
 public class MessageRepositoryAdapter implements MessageRepository {
 
     private final MessageMongoRepository repository;
-    private final MessageDocumentMapper documentMapper;
 
     @Autowired
-    public MessageRepositoryAdapter(MessageMongoRepository repository, MessageDocumentMapper documentMapper) {
+    public MessageRepositoryAdapter(MessageMongoRepository repository) {
         this.repository = repository;
-        this.documentMapper = documentMapper;
     }
 
     @Override
-    public void saveUnsentMessage(Message message) {
-        MessageDocument document = documentMapper.toDocument(message);
-        repository.save(document);
-    }
-
-    @Override
-    public void saveSentMessage(Message message) {
-        MessageDocument document = documentMapper.toDocument(message);
+    public void saveMessage(Message message) {
+        MessageDocument document = MessageDocument.fromMessage(message.snapshot());
         repository.save(document);
     }
 
@@ -40,9 +31,9 @@ public class MessageRepositoryAdapter implements MessageRepository {
         User toUser = new User(toUserId);
         return repository.findByToUserIdAndDeliveredFalseOrderByTimestampDesc(toUserId)
                 .stream()
-                .map(messageDocument -> {
-                    User fromUser = new User(messageDocument.getFromUserId());
-                    return new Message(fromUser, toUser, messageDocument.getContent());
+                .map(document -> {
+                    User fromUser = new User(document.getFromUserId());
+                    return new Message(document.getId(), fromUser, toUser, document.getContent(), document.getTimestamp());
                 }).toList();
     }
 }

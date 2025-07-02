@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface MessageRepository {
 
-    void saveUnsentMessage(Message message);
-
-    void saveSentMessage(Message message);
+    void saveMessage(Message message);
 
     List<Message> getUnsentMessages(String toUserId);
 }

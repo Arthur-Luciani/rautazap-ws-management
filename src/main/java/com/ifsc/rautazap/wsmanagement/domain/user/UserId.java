@@ -1,4 +1,4 @@
 package com.ifsc.rautazap.wsmanagement.domain.user;
 
-public record UserDTO(String id) {
+public record UserId(String value) {
 }

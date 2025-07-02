@@ -20,16 +20,16 @@ public class WebSocketNotifyUserPort implements NotifyUserPort {
     }
 
     @Override
-    public void notifyUser(String userId, String message) {
+    public void notifyUser(String fromUserId, String toUserId, String message) {
         try {
-            String json = new ObjectMapper().writeValueAsString(new WebSocketResponseMessage(message));
-            messagingTemplate.convertAndSendToUser(userId, "/topic/messages", json);
+            String json = new ObjectMapper().writeValueAsString(new WebSocketResponseMessage(fromUserId, message));
+            messagingTemplate.convertAndSendToUser(toUserId, "/topic/messages", json);
         } catch (JsonProcessingException e) {
             log.error("Error serializing message to JSON", e);
             //Should add message to a dead letter queue or log it for further investigation
         }
     }
 
-    private record WebSocketResponseMessage(String content) {
+    private record WebSocketResponseMessage(String fromUserId, String content) {
     }
 }

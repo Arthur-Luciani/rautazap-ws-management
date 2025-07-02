@@ -10,6 +10,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.security.Principal;
+
 @Controller
 @Slf4j
 public class WebSocketController {
@@ -22,14 +24,11 @@ public class WebSocketController {
     }
 
     @MessageMapping("message/{toUser}")
-    public boolean sendMessage(@DestinationVariable String toUser, @RequestBody WebSocketRequestMessage message) {
-        sendMessageUseCase.sendMessage(toUser, message.getMessageContent());
+    public boolean sendMessage(Principal principal, @DestinationVariable String toUser, @RequestBody WebSocketRequestMessage message) {
+        sendMessageUseCase.sendMessage(principal.getName(), toUser, message.messageContent);
         return true;
     }
 
-    @Getter
-    @Setter
-    public static class WebSocketRequestMessage {
-        private String messageContent;
+    public record WebSocketRequestMessage(String messageContent) {
     }
 }

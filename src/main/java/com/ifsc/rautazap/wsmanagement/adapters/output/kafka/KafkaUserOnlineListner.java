@@ -1,0 +1,28 @@
+package com.ifsc.rautazap.wsmanagement.adapters.output.kafka;
+
+import com.ifsc.rautazap.wsmanagement.domain.user.UserDTO;
+import com.ifsc.rautazap.wsmanagement.ports.input.UserOnlineUseCase;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+@Component
+@Slf4j
+public class KafkaUserOnlineListner {
+
+    private static final String USER_ONLINE_TOPIC = "user-online";
+    private static final String GROUP_ID = "user-online-group";
+
+    private final UserOnlineUseCase userOnlineUseCase;
+
+    @Autowired
+    public KafkaUserOnlineListner(UserOnlineUseCase userOnlineUseCase) {
+        this.userOnlineUseCase = userOnlineUseCase;
+    }
+
+    @KafkaListener(topics = USER_ONLINE_TOPIC, groupId = GROUP_ID, containerFactory = "userDtoKafkaListenerContainerFactory")
+    public void listen(UserDTO user) {
+        userOnlineUseCase.userOnline(user);
+    }
+}

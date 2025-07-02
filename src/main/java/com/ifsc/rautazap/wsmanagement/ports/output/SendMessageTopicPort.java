@@ -1,6 +1,8 @@
 package com.ifsc.rautazap.wsmanagement.ports.output;
 
+import com.ifsc.rautazap.wsmanagement.domain.message.MessageDTO;
+
 public interface SendMessageTopicPort {
 
-    void publishSendMessage(String toUser, String message);
+    void publishSaveMessage(MessageDTO message);
 }

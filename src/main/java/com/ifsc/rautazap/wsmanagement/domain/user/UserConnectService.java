@@ -21,8 +21,9 @@ public class UserConnectService implements UserPresenceUseCase {
     @Override
     public void onUserConnected(String userId) {
         userPresencePort.addUserOnline(userId);
-
-        userOnlineTopicPort.publishUserOnlie(userId);
+        User user = new User(userId);
+        UserDTO dto = user.toDTO();
+        userOnlineTopicPort.publishUserOnlie(dto);
     }
 
     @Override

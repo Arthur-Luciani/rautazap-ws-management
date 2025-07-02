@@ -21,7 +21,7 @@ public class KafkaUserOnlineListner {
         this.userOnlineUseCase = userOnlineUseCase;
     }
 
-    @KafkaListener(topics = USER_ONLINE_TOPIC, groupId = GROUP_ID, containerFactory = "userDtoKafkaListenerContainerFactory")
+    @KafkaListener(topics = USER_ONLINE_TOPIC, groupId = GROUP_ID)
     public void listen(UserId user) {
         userOnlineUseCase.userOnline(user);
     }

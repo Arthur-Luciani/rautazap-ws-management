@@ -57,7 +57,11 @@ public class KafkaTopicConfig {
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        configProps.put(JsonSerializer.TYPE_MAPPINGS, "message:com.ifsc.rautazap.wsmanagement.domain.message.Message.MessageData,user:com.ifsc.rautazap.wsmanagement.domain.user.UserId");
+        configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, true);
+        configProps.put(JsonSerializer.TYPE_MAPPINGS,
+            "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId," +
+            "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData," +
+            "SaveMessageCommand:com.ifsc.rautazap.wsmanagement.domain.message.SaveMessageCommand");
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
@@ -74,8 +78,8 @@ public class KafkaTopicConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ifsc.rautazap.wsmanagement.domain.*");
-        props.put(JsonDeserializer.TYPE_MAPPINGS, "message:com.ifsc.rautazap.wsmanagement.domain.message.Message.MessageData,user:com.ifsc.rautazap.wsmanagement.domain.user.UserId");
-        props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, "false");
+        props.put(JsonDeserializer.TYPE_MAPPINGS, "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId,message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData,SaveMessageCommand:com.ifsc.rautazap.wsmanagement.domain.message.SaveMessageCommand");
+        props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, "true");
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Object.class, false));
     }

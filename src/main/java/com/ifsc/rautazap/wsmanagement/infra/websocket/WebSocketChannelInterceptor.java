@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class WebSocketChannelInterceptor implements ChannelInterceptor {
 
-    static final String WS_ID_HEADER = "ws-value";
+    static final String USER_ID_HEADER = "user-id";
 
     @Override
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
@@ -46,7 +46,7 @@ public class WebSocketChannelInterceptor implements ChannelInterceptor {
     }
 
     private String readWebSocketIdHeader(StompHeaderAccessor accessor) {
-        final String wsId = accessor.getFirstNativeHeader(WS_ID_HEADER);
+        final String wsId = accessor.getFirstNativeHeader(USER_ID_HEADER);
         if (wsId == null || wsId.trim().isEmpty()) {
             throw new AuthenticationCredentialsNotFoundException("Web Socket ID Header not found");
         }

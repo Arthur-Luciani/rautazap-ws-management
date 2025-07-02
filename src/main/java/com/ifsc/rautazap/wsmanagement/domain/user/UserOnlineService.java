@@ -20,10 +20,10 @@ public class UserOnlineService implements UserOnlineUseCase {
 
     @Override
     public void userOnline(UserId userId) {
-        messageRepository.getUnsentMessages(userId.value())
-                .forEach(message -> {
-                    notifyUserPort.notifyUser(message.snapshot());
-                    messageRepository.saveMessage(message);
-                });
+        var list = messageRepository.getUnsentMessages(userId.value());
+        for (var message : list) {
+            notifyUserPort.notifyUser(message.snapshot());
+            messageRepository.saveMessage(message);
+        }
     }
 }

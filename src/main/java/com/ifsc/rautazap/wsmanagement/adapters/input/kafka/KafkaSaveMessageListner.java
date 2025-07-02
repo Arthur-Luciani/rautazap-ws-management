@@ -1,6 +1,6 @@
 package com.ifsc.rautazap.wsmanagement.adapters.input.kafka;
 
-import com.ifsc.rautazap.wsmanagement.domain.message.SaveMessageCommand;
+import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 import com.ifsc.rautazap.wsmanagement.ports.input.SaveMessageUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -19,8 +19,8 @@ public class KafkaSaveMessageListner {
         this.saveMessageUseCase = saveMessageUseCase;
     }
 
-    @KafkaListener(topics = SAVE_MESSAGE_TOPIC, groupId = GROUP_ID, containerFactory = "messageDtoKafkaListenerContainerFactory")
-    public void listen(SaveMessageCommand message) {
+    @KafkaListener(topics = SAVE_MESSAGE_TOPIC, groupId = GROUP_ID)
+    public void listen(Message.MessageData message) {
         saveMessageUseCase.saveMessage(message);
     }
 }

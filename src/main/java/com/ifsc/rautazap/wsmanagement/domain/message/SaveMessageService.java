@@ -18,8 +18,8 @@ public class SaveMessageService implements SaveMessageUseCase {
     }
 
     @Override
-    public void saveMessage(SaveMessageCommand command) {
-        Message message = messageFactory.createMessage(command.messageId(), command.fromUserId(), command.toUserId(), command.content());
+    public void saveMessage(Message.MessageData command) {
+        Message message = messageFactory.createMessage(command.id(), command.fromUserId(), command.toUserId(), command.content());
         messageRepository.saveMessage(message);
     }
 }

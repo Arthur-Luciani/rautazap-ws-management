@@ -21,7 +21,7 @@ function connect() {
 
     // Start the STOMP communications, provide a callback for when the CONNECT frame arrives.
     stompClient.connect(
-        {'authKey':apiKey, 'ws-id':wsId },
+        {'authKey':apiKey, 'user-id':wsId },
         function (frame) {
             showInfo(frame);
             console.log(frame);
@@ -54,4 +54,5 @@ function showMessage(message) {
 function showInfo(message) {
     $("#connected").append("<tr><td>" + message + "</td></tr>");
 }
+
 

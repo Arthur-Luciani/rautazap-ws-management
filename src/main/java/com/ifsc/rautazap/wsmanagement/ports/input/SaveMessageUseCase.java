@@ -1,8 +1,8 @@
 package com.ifsc.rautazap.wsmanagement.ports.input;
 
-import com.ifsc.rautazap.wsmanagement.domain.message.SaveMessageCommand;
+import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 
 public interface SaveMessageUseCase {
 
-    void saveMessage(SaveMessageCommand command);
+    void saveMessage(Message.MessageData command);
 }

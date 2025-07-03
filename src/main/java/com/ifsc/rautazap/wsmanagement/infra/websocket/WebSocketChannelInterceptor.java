@@ -25,12 +25,11 @@ public class WebSocketChannelInterceptor implements ChannelInterceptor {
         final StompHeaderAccessor accessor = readHeaderAccessor(message);
 
         if (accessor.getCommand() == StompCommand.CONNECT) {
-
-            String wsId = readWebSocketIdHeader(accessor);
-            UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(wsId, null);
+            String userId = readUserIdHeader(accessor);
+            UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(userId, null);
             accessor.setUser(user);
             accessor.setHeader("connection-time", LocalDateTime.now().toString());
-            log.info("User with ws-userId {} make a WebSocket connection and generated the user {}", wsId, user);
+            log.info("User with user-id {} make a WebSocket connection and generated the user {}", userId, user);
         }
 
         return message;
@@ -45,7 +44,7 @@ public class WebSocketChannelInterceptor implements ChannelInterceptor {
         return accessor;
     }
 
-    private String readWebSocketIdHeader(StompHeaderAccessor accessor) {
+    private String readUserIdHeader(StompHeaderAccessor accessor) {
         final String wsId = accessor.getFirstNativeHeader(USER_ID_HEADER);
         if (wsId == null || wsId.trim().isEmpty()) {
             throw new AuthenticationCredentialsNotFoundException("Web Socket ID Header not found");

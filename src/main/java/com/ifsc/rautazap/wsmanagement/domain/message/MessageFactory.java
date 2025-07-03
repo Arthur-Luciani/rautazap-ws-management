@@ -2,7 +2,7 @@ package com.ifsc.rautazap.wsmanagement.domain.message;
 
 import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
-import com.ifsc.rautazap.wsmanagement.ports.output.UserPresencePort;
+import com.ifsc.rautazap.wsmanagement.application.ports.output.UserPresencePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

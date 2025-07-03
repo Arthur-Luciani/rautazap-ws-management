@@ -35,7 +35,7 @@ public class KafkaTopicConfig {
             .name("user-online")
             .partitions(1)
             .replicas(1)
-            .config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days
+            .config(TopicConfig.RETENTION_MS_CONFIG, "604800000")
             .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
             .build();
     }
@@ -46,7 +46,7 @@ public class KafkaTopicConfig {
                 .name("save-message")
                 .partitions(3)
                 .replicas(1)
-                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days
+                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000")
                 .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
                 .build();
     }
@@ -60,8 +60,7 @@ public class KafkaTopicConfig {
         configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, true);
         configProps.put(JsonSerializer.TYPE_MAPPINGS,
             "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId," +
-            "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData," +
-            "SaveMessageCommand:com.ifsc.rautazap.wsmanagement.domain.message.SaveMessageCommand");
+            "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData");
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
@@ -78,7 +77,9 @@ public class KafkaTopicConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ifsc.rautazap.wsmanagement.domain.*");
-        props.put(JsonDeserializer.TYPE_MAPPINGS, "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId,message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData,SaveMessageCommand:com.ifsc.rautazap.wsmanagement.domain.message.SaveMessageCommand");
+        props.put(JsonDeserializer.TYPE_MAPPINGS,
+                "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId," +
+                        "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData");
         props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, "true");
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Object.class, false));

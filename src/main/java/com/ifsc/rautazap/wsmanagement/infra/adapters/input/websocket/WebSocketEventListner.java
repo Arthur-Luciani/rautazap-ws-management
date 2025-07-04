@@ -1,7 +1,7 @@
 package com.ifsc.rautazap.wsmanagement.infra.adapters.input.websocket;
 
-import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
 import com.ifsc.rautazap.wsmanagement.application.ports.input.UserPresenceUseCase;
+import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -28,7 +28,7 @@ public class WebSocketEventListner {
 
         if (userPrincipal != null && userPrincipal.getName() != null) {
             log.info("Adapter: Connection event received for user {}", userPrincipal.getName());
-            userPresenceUseCase.onUserConnected(new UserId(userPrincipal.getName()));
+            userPresenceUseCase.onUserConnected(new User.UserId(userPrincipal.getName()));
         }
     }
 
@@ -39,7 +39,7 @@ public class WebSocketEventListner {
 
         if (userPrincipal != null && userPrincipal.getName() != null) {
             log.info("Adapter: Disconnect event received for user {}", userPrincipal.getName());
-            userPresenceUseCase.onUserDisconnected(new UserId(userPrincipal.getName()));
+            userPresenceUseCase.onUserDisconnected(new User.UserId(userPrincipal.getName()));
         }
     }
 

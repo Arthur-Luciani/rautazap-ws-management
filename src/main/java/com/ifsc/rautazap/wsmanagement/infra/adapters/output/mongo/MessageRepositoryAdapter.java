@@ -1,10 +1,11 @@
 package com.ifsc.rautazap.wsmanagement.infra.adapters.output.mongo;
 
+import com.ifsc.rautazap.wsmanagement.application.ports.output.MessageRepository;
+import com.ifsc.rautazap.wsmanagement.application.ports.output.UserRepository;
 import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import com.ifsc.rautazap.wsmanagement.infra.mongo.MessageDocument;
 import com.ifsc.rautazap.wsmanagement.infra.mongo.MongoMessageRepository;
-import com.ifsc.rautazap.wsmanagement.application.ports.output.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,12 @@ import java.util.List;
 public class MessageRepositoryAdapter implements MessageRepository {
 
     private final MongoMessageRepository repository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MessageRepositoryAdapter(MongoMessageRepository repository) {
+    public MessageRepositoryAdapter(MongoMessageRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -28,11 +31,11 @@ public class MessageRepositoryAdapter implements MessageRepository {
 
     @Override
     public List<Message> getUnsentMessages(String toUserId) {
-        User toUser = new User(toUserId);
+        User toUser = userRepository.findUserById(new User.UserId(toUserId));
         return repository.findByToUserIdAndDeliveredFalseOrderByTimestampDesc(toUserId)
                 .stream()
                 .map(document -> {
-                    User fromUser = new User(document.getFromUserId());
+                    User fromUser = userRepository.findUserById(new User.UserId(document.getFromUserId()));
                     return new Message(document.getId(), fromUser, toUser, document.getContent(), document.getTimestamp());
                 }).toList();
     }

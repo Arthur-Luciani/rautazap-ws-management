@@ -1,7 +1,7 @@
 package com.ifsc.rautazap.wsmanagement.infra.adapters.input.kafka;
 
-import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
 import com.ifsc.rautazap.wsmanagement.application.ports.input.UserOnlineUseCase;
+import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,7 +22,7 @@ public class KafkaUserOnlineListner {
     }
 
     @KafkaListener(topics = USER_ONLINE_TOPIC, groupId = GROUP_ID)
-    public void listen(UserId user) {
+    public void listen(User.UserId user) {
         userOnlineUseCase.userOnline(user);
     }
 }

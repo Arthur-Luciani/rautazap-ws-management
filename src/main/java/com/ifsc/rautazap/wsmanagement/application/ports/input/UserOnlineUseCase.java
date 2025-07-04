@@ -1,8 +1,8 @@
 package com.ifsc.rautazap.wsmanagement.application.ports.input;
 
-import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
+import com.ifsc.rautazap.wsmanagement.domain.user.User;
 
 public interface UserOnlineUseCase {
 
-    void userOnline(UserId user);
+    void userOnline(User.UserId user);
 }

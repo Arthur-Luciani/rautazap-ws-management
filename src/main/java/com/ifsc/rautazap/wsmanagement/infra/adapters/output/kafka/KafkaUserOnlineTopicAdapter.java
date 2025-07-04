@@ -1,7 +1,7 @@
 package com.ifsc.rautazap.wsmanagement.infra.adapters.output.kafka;
 
-import com.ifsc.rautazap.wsmanagement.domain.user.UserId;
 import com.ifsc.rautazap.wsmanagement.application.ports.output.UserOnlineTopicPort;
+import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,7 +21,7 @@ public class KafkaUserOnlineTopicAdapter implements UserOnlineTopicPort {
     }
 
     @Override
-    public void publishUserOnline(UserId user) {
+    public void publishUserOnline(User.UserId user) {
         kafkaTemplate.send(USER_ONLINE_TOPIC, user.value(), user);
     }
 }

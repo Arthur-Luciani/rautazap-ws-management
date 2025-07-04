@@ -1,6 +1,6 @@
 package com.ifsc.rautazap.wsmanagement.infra.adapters.input.websocket;
 
-import com.ifsc.rautazap.wsmanagement.domain.message.SendMessageCommand;
+import com.ifsc.rautazap.wsmanagement.application.ports.input.command.SendMessageCommand;
 import com.ifsc.rautazap.wsmanagement.application.ports.input.SendMessageUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

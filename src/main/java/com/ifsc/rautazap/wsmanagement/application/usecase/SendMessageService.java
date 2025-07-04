@@ -5,7 +5,7 @@ import com.ifsc.rautazap.wsmanagement.application.ports.output.NotifyUserPort;
 import com.ifsc.rautazap.wsmanagement.application.ports.output.SaveMessageTopicPort;
 import com.ifsc.rautazap.wsmanagement.domain.message.Message;
 import com.ifsc.rautazap.wsmanagement.domain.message.MessageFactory;
-import com.ifsc.rautazap.wsmanagement.domain.message.SendMessageCommand;
+import com.ifsc.rautazap.wsmanagement.application.ports.input.command.SendMessageCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

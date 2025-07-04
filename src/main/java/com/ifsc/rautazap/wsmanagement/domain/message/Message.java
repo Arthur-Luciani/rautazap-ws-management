@@ -34,8 +34,8 @@ public class Message {
     public MessageData snapshot() {
         return new MessageData(
                 this.id,
-                this.fromUser.getId(),
-                this.toUser.getId(),
+                this.fromUser.snapshot().value(),
+                this.toUser.snapshot().value(),
                 this.content,
                 this.timestamp,
                 this.isDestinationUserOnline());
@@ -49,6 +49,5 @@ public class Message {
             LocalDateTime timestamp,
             boolean isDestinationUserOnline
     ) {
-
     }
 }

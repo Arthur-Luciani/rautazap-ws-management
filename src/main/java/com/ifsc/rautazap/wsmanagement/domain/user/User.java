@@ -1,13 +1,21 @@
 package com.ifsc.rautazap.wsmanagement.domain.user;
 
+import com.ifsc.rautazap.wsmanagement.domain.message.Message;
+import lombok.Getter;
+
 public class User {
 
-    private String id;
-    private boolean online;
+    private final String id;
+    @Getter
+    private final boolean online;
 
     public User(String id, boolean online) {
         this.id = id;
         this.online = online;
+    }
+
+    public Message sendMessage(User toUser, String content) {
+        return new Message(this, toUser, content);
     }
 
     public UserId snapshot() {
@@ -15,9 +23,5 @@ public class User {
     }
 
     public record UserId(String value) {
-    }
-
-    public boolean isOnline() {
-        return online;
     }
 }

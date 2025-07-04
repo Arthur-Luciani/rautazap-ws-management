@@ -2,8 +2,9 @@ package com.ifsc.rautazap.wsmanagement.application.usecase;
 
 import com.ifsc.rautazap.wsmanagement.application.ports.input.SaveMessageUseCase;
 import com.ifsc.rautazap.wsmanagement.application.ports.output.MessageRepository;
+import com.ifsc.rautazap.wsmanagement.application.ports.output.UserRepository;
 import com.ifsc.rautazap.wsmanagement.domain.message.Message;
-import com.ifsc.rautazap.wsmanagement.domain.message.MessageFactory;
+import com.ifsc.rautazap.wsmanagement.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +12,20 @@ import org.springframework.stereotype.Service;
 public class SaveMessageService implements SaveMessageUseCase {
 
     private final MessageRepository messageRepository;
-    private final MessageFactory messageFactory;
+    private final UserRepository userRepository;
 
     @Autowired
-    public SaveMessageService(MessageRepository messageRepository, MessageFactory messageFactory) {
+    public SaveMessageService(MessageRepository messageRepository, UserRepository userRepository) {
         this.messageRepository = messageRepository;
-        this.messageFactory = messageFactory;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void saveMessage(Message.MessageData command) {
-        Message message = messageFactory.createMessage(command.id(), command.fromUserId(), command.toUserId(), command.content());
+        User fromUser = userRepository.findUserById(new User.UserId(command.fromUserId()));
+        User toUser = userRepository.findUserById(new User.UserId(command.toUserId()));
+        Message message = fromUser.sendMessage(toUser, command.content());
+
         messageRepository.saveMessage(message);
     }
 }

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  kafka:
+    image: apache/kafka:4.0.0
+    ports:
+      - "9092:9092"
+    container_name: kafka_local
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_local
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: redis_local
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  activemq:
+    image: vromero/activemq-artemis:latest
+    container_name: mq
+    environment:
+      - ARTEMIS_USERNAME=artemis
+      - ARTEMIS_PASSWORD=artemis
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+
+volumes:
+  mongo_data:
+  redis_data:

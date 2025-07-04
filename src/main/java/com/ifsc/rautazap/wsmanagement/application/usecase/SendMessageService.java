@@ -26,9 +26,9 @@ public class SendMessageService implements SendMessageUseCase {
 
     @Override
     public void sendMessage(SendMessageCommand command) {
-        User from = userRepository.findUserById(new User.UserId(command.fromUserId()));
-        User to = userRepository.findUserById(new User.UserId(command.toUserId()));
-        Message message = from.sendMessage(to, command.content());
+        User fromUser = userRepository.findUserById(new User.UserId(command.fromUserId()));
+        User toUser = userRepository.findUserById(new User.UserId(command.toUserId()));
+        Message message = fromUser.sendMessage(toUser, command.content());
 
         if (message.isDestinationUserOnline()) {
             notifyUserPort.notifyUser(message.snapshot());

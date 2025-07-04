@@ -7,11 +7,19 @@ public class User {
 
     private final String id;
     @Getter
-    private final boolean online;
+    private boolean online;
 
     public User(String id, boolean online) {
         this.id = id;
         this.online = online;
+    }
+
+    public void goOnline() {
+        this.online = true;
+    }
+
+    public void goOffline() {
+        this.online = false;
     }
 
     public Message sendMessage(User toUser, String content) {

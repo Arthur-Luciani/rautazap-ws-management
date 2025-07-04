@@ -8,25 +8,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserConnectService implements UserPresenceUseCase {
+public class UserPresenceService implements UserPresenceUseCase {
 
-    private final UserRepository userPresencePort;
+    private final UserRepository userRepository;
     private final UserOnlineTopicPort userOnlineTopicPort;
 
     @Autowired
-    public UserConnectService(UserRepository userPresencePort, UserOnlineTopicPort userOnlineTopicPort) {
-        this.userPresencePort = userPresencePort;
+    public UserPresenceService(UserRepository userRepository, UserOnlineTopicPort userOnlineTopicPort) {
+        this.userRepository = userRepository;
         this.userOnlineTopicPort = userOnlineTopicPort;
     }
 
     @Override
     public void onUserConnected(User.UserId userId) {
-        userPresencePort.saveUser(new User(userId.value(), true));
+        User user = userRepository.findUserById(userId);
+        user.goOnline();
+
+        userRepository.saveUser(user);
         userOnlineTopicPort.publishUserOnline(userId);
     }
 
     @Override
     public void onUserDisconnected(User.UserId userId) {
-        userPresencePort.saveUser(new User(userId.value(), false));
+        User user = userRepository.findUserById(userId);
+        user.goOffline();
+
+        userRepository.saveUser(user);
     }
 }

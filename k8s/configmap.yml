@@ -7,14 +7,13 @@ data:
   SPRING_DATA_MONGODB_URI: "mongodb://mongodb:27017/rautazap"
   SPRING_DATA_REDIS_HOST: "redis-master"
   SPRING_DATA_REDIS_PORT: "6379"
-  SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka.default.svc.cluster.local:9092"
 
-  # Novas chaves para o Artemis, lidas pelo WebSocketConfig.java
-  # O Spring Boot mapeia ARTEMIS_RELAY_HOST para artemis.relay.host
-  ARTEMIS_RELAY_HOST: "artemis-activemq-artemis"
-  ARTEMIS_RELAY_PORT: "61613" # Porta STOMP do Artemis
-  ARTEMIS_USER: "artemis" # Usuário padrão do chart
-  ARTEMIS_PASSWORD: "artemis" # Senha padrão do chart (artemis ao contrário)
+  # Chaves atualizadas para o chart do ActiveMQ da Bitnami
+  BROKER_HOST: "artemis-service"
+  BROKER_PORT: "61613" # Porta STOMP do ActiveMQ
+  BROKER_USERNAME: "artemis" # Usuário padrão do chart da Bitnami
+  BROKER_PASSWORD: "rautazap" # Senha definida no comando helm install
 
   # Chave para tornar a inicialização do Kafka mais resiliente
   SPRING_KAFKA_ADMIN_FAIL_FAST: "false"

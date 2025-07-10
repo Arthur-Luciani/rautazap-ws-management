@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artemis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: artemis
+  template:
+    metadata:
+      labels:
+        app: artemis
+    spec:
+      containers:
+        - name: artemis
+          image: vromero/activemq-artemis:latest-alpine
+          ports:
+            - containerPort: 8161 # Consola
+            - containerPort: 61616 # CORE
+            - containerPort: 61613 # STOMP
+          env:
+            - name: ARTEMIS_USERNAME
+              value: "artemis"
+            - name: ARTEMIS_PASSWORD
+              value: "rautazap"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: artemis-service
+spec:
+  selector:
+    app: artemis
+  ports:
+    - name: console
+      protocol: TCP
+      port: 8161
+      targetPort: 8161
+    - name: core
+      protocol: TCP
+      port: 61616
+      targetPort: 61616
+    - name: stomp
+      protocol: TCP
+      port: 61613
+      targetPort: 61613

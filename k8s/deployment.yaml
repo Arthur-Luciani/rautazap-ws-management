@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: rautazap
-          image: rautazap:latestaa # O nome e tag da sua imagem Docker
+          image: rautazap:latest # O nome e tag da sua imagem Docker
           imagePullPolicy: IfNotPresent # Importante para usar imagens locais no Minikube
           ports:
             - containerPort: 8080

@@ -1,5 +1,6 @@
 package com.ifsc.rautazap.wsmanagement.infra.kafka;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Slf4j
 public class KafkaTopicConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -32,12 +34,12 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic userOnlineTopic() {
         return TopicBuilder
-            .name("user-online")
-            .partitions(1)
-            .replicas(1)
-            .config(TopicConfig.RETENTION_MS_CONFIG, "604800000")
-            .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
-            .build();
+                .name("user-online")
+                .partitions(1)
+                .replicas(1)
+                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000")
+                .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
+                .build();
     }
 
     @Bean
@@ -53,14 +55,15 @@ public class KafkaTopicConfig {
 
     @Bean
     public ProducerFactory<String, Object> producerFactory() {
+        log.info("Creating Kafka producer with bootstrap servers: {}", bootstrapServers);
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, true);
         configProps.put(JsonSerializer.TYPE_MAPPINGS,
-            "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId," +
-            "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData");
+                "UserId:com.ifsc.rautazap.wsmanagement.domain.user.User$UserId," +
+                        "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData");
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
@@ -78,7 +81,7 @@ public class KafkaTopicConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ifsc.rautazap.wsmanagement.domain.*");
         props.put(JsonDeserializer.TYPE_MAPPINGS,
-                "UserId:com.ifsc.rautazap.wsmanagement.domain.user.UserId," +
+                "UserId:com.ifsc.rautazap.wsmanagement.domain.user.User$UserId," +
                         "message:com.ifsc.rautazap.wsmanagement.domain.message.Message$MessageData");
         props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, "true");
 

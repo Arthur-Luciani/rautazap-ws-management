@@ -15,16 +15,16 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Value("${broker.host}")
-    private String brokerHost;
+    private String relayHost;
 
     @Value("${broker.port}")
-    private int brokerPort;
+    private int relayPort;
 
     @Value("${broker.username}")
-    private String brokerUser;
+    private String artemisUser;
 
     @Value("${broker.password}")
-    private String brokerPass;
+    private String artemisPassword;
 
     private final WebSocketChannelInterceptor channelInterceptor;
 
@@ -41,13 +41,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        log.info("Configuring message broker with relay host: {}, port: {}", relayHost, relayPort);
         registry.enableStompBrokerRelay("/queue", "/topic")
-                .setRelayHost(brokerHost)
-                .setRelayPort(brokerPort)
-                .setClientLogin(brokerUser)
-                .setClientPasscode(brokerPass)
-                .setSystemLogin(brokerUser)
-                .setSystemPasscode(brokerPass)
+                .setRelayHost(relayHost)
+                .setRelayPort(relayPort)
+                .setClientLogin(artemisUser)
+                .setClientPasscode(artemisPassword)
+                .setSystemLogin(artemisUser)
+                .setSystemPasscode(artemisPassword)
                 .setUserDestinationBroadcast("/topic/unresolved-user")
                 .setUserRegistryBroadcast("/topic/log-user-registry");
 

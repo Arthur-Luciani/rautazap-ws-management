@@ -1,35 +1,21 @@
-FROM maven:3.9-eclipse-temurin-21-alpine AS build
+# Estágio 1: Build (Opcional, se você não quiser construir o JAR localmente)
+# FROM maven:3.8.5-openjdk-21 AS build
+# COPY . .
+# RUN mvn clean package -DskipTests
+
+# Estágio 2: Imagem Final
+# Usamos uma imagem base leve, apenas com o Java Runtime
+FROM openjdk:21-jdk-slim
+
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copy pom.xml first for better layer caching
-COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
+# Copia o JAR da pasta target (gerado pelo 'mvn package') para o container
+# Certifique-se de que o nome do JAR corresponde ao gerado pelo seu pom.xml
+COPY target/ws-management-0.0.1-SNAPSHOT.jar app.jar
 
-# Download dependencies
-RUN mvn dependency:go-offline -B
-
-# Copy source code
-COPY src ./src
-
-# Package the application
-RUN mvn package -DskipTests
-
-# Runtime stage
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-
-# Create volume directories
-VOLUME /logs
-
-# Copy the built JAR from the build stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Expose necessary ports
+# Expõe a porta que a aplicação Spring Boot usa
 EXPOSE 8080
 
-# Set environment variables (can be overridden at runtime)
-ENV SPRING_PROFILES_ACTIVE=prod
-
-# Launch application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando para executar a aplicação quando o container iniciar
+ENTRYPOINT ["java","-jar","app.jar"]

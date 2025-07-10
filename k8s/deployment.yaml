@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rautazap-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rautazap
+  template:
+    metadata:
+      labels:
+        app: rautazap
+    spec:
+      containers:
+        - name: rautazap
+          image: rautazap:latestaa # O nome e tag da sua imagem Docker
+          imagePullPolicy: IfNotPresent # Importante para usar imagens locais no Minikube
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: rautazap-config
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"

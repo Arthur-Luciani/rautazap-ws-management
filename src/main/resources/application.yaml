@@ -20,5 +20,3 @@ broker:
   port: 61616
   username: artemis
   password: artemis
-
-

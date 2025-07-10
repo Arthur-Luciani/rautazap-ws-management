@@ -11,22 +11,21 @@ $(document).ready(function() {
 });
 
 function connect() {
-    let apiKey = document.getElementById("key-id").value;
     let wsId = document.getElementById("ws-id").value;
 
     // Try to set up WebSocket connection with the handshake
-    var socket = new SockJS('/ws-register?authKey='+apiKey);
+    var socket = new SockJS('/ws-register');
     // Create a new StompClient object with the WebSocket endpoint
     stompClient = Stomp.over(socket);
 
     // Start the STOMP communications, provide a callback for when the CONNECT frame arrives.
     stompClient.connect(
-        {'authKey':apiKey, 'user-id':wsId },
+        {'user-id':wsId },
         function (frame) {
             showInfo(frame);
             console.log(frame);
             stompClient.subscribe('/user/topic/messages', function (message) {
-                showMessage(JSON.parse(message.body).content);
+                showMessage(JSON.parse(message.body));
             });
         },
         function (err){
@@ -37,18 +36,17 @@ function connect() {
 function sendPrivateMessage() {
     let message = document.getElementById("private-message").value;
     let userId = document.getElementById("user-id").value;
-    let apiKey = document.getElementById("key-id").value;
     console.log("Sending private message '"+message+"' to user "+userId);
 
     stompClient.send(
         "/app/message/"+userId,
-        {'authKey': apiKey },
+        {'authKey': '' },
         JSON.stringify({'messageContent': message})
     );
 }
 
 function showMessage(message) {
-    $("#messages").append("<tr><td style='font-size: 8px'>" + message + "</td></tr>");
+    $("#messages").append("<tr><td style='font-size: 15px'> " + "Sent by:" + message.fromUserId + " |Message: " + message.content + "</td></tr>");
 }
 
 function showInfo(message) {

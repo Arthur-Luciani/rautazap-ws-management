@@ -55,7 +55,6 @@ public class KafkaTopicConfig {
 
     @Bean
     public ProducerFactory<String, Object> producerFactory() {
-        log.info("Creating Kafka producer with bootstrap servers: {}", bootstrapServers);
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
